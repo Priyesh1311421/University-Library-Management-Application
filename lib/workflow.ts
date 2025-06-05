@@ -1,4 +1,7 @@
 import config from "./config";
+import { Client as WorkflowClient } from "@upstash/workflow";
+import { Client as QStashClient, resend } from "@upstash/qstash";
+
 
 type SendEmailProps = {
   email: string;
@@ -6,6 +9,16 @@ type SendEmailProps = {
   message: string;
   name?: string; // Optional, can be used for personalized messages
 };
+
+export const workflowClient = new WorkflowClient({
+  baseUrl: config.env.upstash.qstashUrl,
+  token: config.env.upstash.qstashToken,
+});
+
+const qstashClient = new QStashClient({
+  token: config.env.upstash.qstashToken,
+});
+
 
 export async function sendEmail({ name, email, subject, message }: SendEmailProps) {
   const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
