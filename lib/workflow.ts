@@ -1,14 +1,6 @@
-import config from "./config";
 import { Client as WorkflowClient } from "@upstash/workflow";
 import { Client as QStashClient, resend } from "@upstash/qstash";
-
-
-type SendEmailProps = {
-  email: string;
-  subject: string;
-  message: string;
-  name?: string; // Optional, can be used for personalized messages
-};
+import config from "@/lib/config";
 
 export const workflowClient = new WorkflowClient({
   baseUrl: config.env.upstash.qstashUrl,
@@ -19,30 +11,25 @@ const qstashClient = new QStashClient({
   token: config.env.upstash.qstashToken,
 });
 
-
-export async function sendEmail({ name, email, subject, message }: SendEmailProps) {
-  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+export const sendEmail = async ({
+  email,
+  subject,
+  message,
+}: {
+  email: string;
+  subject: string;
+  message: string;
+}) => {
+  await qstashClient.publishJSON({
+    api: {
+      name: "email",
+      provider: resend({ token: config.env.resendToken }),
     },
-    body: JSON.stringify({
-      service_id: config.env.emailjs.serviceId,
-      template_id: config.env.emailjs.templateId,
-      user_id: config.env.emailjs.publicKey,
-      template_params: {
-        to_email: email,
-        subject,
-        message,
-        name
-      },
-    }),
+    body: {
+      from: "BookWise <onboarding@resend.dev>",
+      to: [email],
+      subject,
+      html: message,
+    },
   });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Email sending failed: ${errorText}`);
-  }
-
-  return res.json();
-}
+};
