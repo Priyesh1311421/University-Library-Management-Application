@@ -23,9 +23,10 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     ) {
       await prisma.user.update({
         where: { id: session.user.id },
-        data: { lastActivityDate: today },
+        data: { lastActivityDate: new Date(today) },
       });
     }
+
   }
 
   return (
