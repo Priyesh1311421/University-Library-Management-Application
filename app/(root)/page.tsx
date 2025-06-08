@@ -1,15 +1,23 @@
+import { auth } from "@/auth";
 import BookList from "@/components/BookList";
 import BookOverview from "@/components/BookOverview";
-import { sampleBooks } from "@/constants";
+import { prisma } from "@/databases/db";
 
 const Home = async() => {
+
+  const latestBooks = await prisma.books.findMany({
+    take: 10
+  })
+
+  const session = await auth();
+  const userId = session?.user?.id || "";
   
   return(
     <>
-      <BookOverview {...sampleBooks[0]} />
+      <BookOverview {...{ ...{...latestBooks[0] },userId}} />
       <BookList
         title="Popular Books"
-        books={sampleBooks}
+        books={latestBooks}
         containerClassName="mt-10"
       />
     </>

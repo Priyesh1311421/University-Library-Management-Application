@@ -13,7 +13,6 @@ const Page = () => (
       email: "",
       password: "",
     }}
-    // @ts-ignore
     onSubmit={signInWithCredentials}
   />
 );

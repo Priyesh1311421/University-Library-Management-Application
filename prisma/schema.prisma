@@ -24,6 +24,11 @@ enum Role {
   ADMIN
 }
 
+enum BorrowStatus {
+  BORROWED
+  RETURNED
+}
+
 model User {
   id                  String         @id @default(uuid())
   fullName            String
@@ -35,6 +40,7 @@ model User {
   role                Role           @default(USER)
   lastActivityDate    DateTime       @default(now())
   createdAt           DateTime       @default(now())
+   borrowRecords BorrowRecord[]
 }
 
 
@@ -52,5 +58,19 @@ model Books {
   videoUrl            String
   summary             String
   createdAt           DateTime       @default(now())
+  borrowRecords BorrowRecord[]
 }
 
+model BorrowRecord {
+  id                  String         @id @default(uuid()) @unique
+  userId              String
+  bookId              String
+  borrowDate          DateTime        @default(now())
+  dueDate             DateTime
+  returnDate          DateTime?
+  status              BorrowStatus    @default(BORROWED)
+  createdAt           DateTime        @default(now())
+
+  user                User            @relation(fields: [userId], references: [id])
+  book                Books           @relation(fields: [bookId], references: [id])
+}

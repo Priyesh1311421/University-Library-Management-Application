@@ -85,7 +85,7 @@
 
   /* Book List */
   .book-list {
-    @apply mt-10 flex flex-wrap max-xs:gap-5 gap-10 max-xs:justify-between;
+    @apply mt-10 flex flex-wrap max-sm:flex-1 gap-1 md:gap-14 lg:gap-16 max-xs:justify-between;
   }
 
   /* Book Overview */

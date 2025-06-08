@@ -1,9 +1,11 @@
 import Image from "next/image";
 import React from "react";
-import { Button } from "./ui/button";
 import BookCover from "./BookCover";
+import BorrowBook from "./BorrowBook";
+import { prisma } from "@/databases/db";
 
-const BookOverview = ({
+const BookOverview = async({
+  id,
   title,
   author,
   genre,
@@ -13,7 +15,19 @@ const BookOverview = ({
   description,
   coverColor,
   coverUrl,
+  userId
 }: Book) => {
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId
+    }
+  })
+  if(!user ) return null;
+  const borrowingEligibility = {
+    isEligible : availableCopies > 0 && user.status === "APPROVED",
+    message:availableCopies < 0 ? "Book is not available for borrowing" : "You are not eligible to borrow books at this time."
+  };
   return (
     <section className="book-overview">
       <div className="flex flex-1 flex-col gap-5">
@@ -43,10 +57,7 @@ const BookOverview = ({
         </div>
         <p className="book-description">{description}</p>
 
-        <Button className="book-overview_btn">
-          <Image src="/icons/book.svg" alt="book" width={20} height={20} />
-          <p className="font-bebas-neue text-xl text-dark-100">Borrow Book</p>
-        </Button>
+        <BorrowBook bookId={id} userId={userId ?? ""} borrowingEligibility={borrowingEligibility}/>
       </div>
       <div className="relative flex flex-1 justify-center ">
         <div className="relative">

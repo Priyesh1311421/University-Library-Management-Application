@@ -31,8 +31,8 @@ const Page = async () => {
   const profileImage = "/default-avatar.png"; // or Gravatar logic etc.
   return (
     <>
-      <div className="flex flex-row gap-24 h-auto justify-between">
-        <div className="lg:w-[520px] w-[380] flex-shrink-0">
+      <div className="flex flex-row max-lg:flex-col gap-24 h-auto justify-between">
+        <div className="lg:w-[520px] w-full flex-shrink-0">
           <UserCard
               fullName={fullName}
               email={email}
