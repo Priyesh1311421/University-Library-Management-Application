@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { auth, signOut } from "@/auth";
+import { auth} from "@/auth";
 import React from "react";
 import BookList from "@/components/BookList";
-import { sampleBooks } from "@/constants";
 import UserCard from "@/components/UserCard";
 import { prisma } from "@/databases/db";
 
@@ -19,6 +17,20 @@ const Page = async () => {
   if (!user) {
     return <p className="text-white">User not found</p>;
   }
+
+  const borrowedRecords = await prisma.borrowRecord.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      book: true, 
+    },
+  });
+
+  // Map to extract the book objects
+  const borrowedBooks = borrowedRecords
+    .map(record => record.book)
+    .filter(Boolean);
 
   const {
     fullName,
@@ -42,7 +54,7 @@ const Page = async () => {
           />
         </div>
         <div className="flex-1">
-          <BookList title="Borrowed Books" books={sampleBooks} />
+          <BookList title="Borrowed Books" books={borrowedBooks} />
         </div>
       </div>
     </>
