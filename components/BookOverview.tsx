@@ -17,6 +17,7 @@ const BookOverview = async({
   coverUrl,
   userId
 }: Book) => {
+  
 
   const user = await prisma.user.findUnique({
     where: {
@@ -57,7 +58,7 @@ const BookOverview = async({
         </div>
         <p className="book-description">{description}</p>
 
-        <BorrowBook bookId={id} userId={userId ?? ""} borrowingEligibility={borrowingEligibility}/>
+        {user.status === "APPROVED" && <BorrowBook bookId={id} userId={userId ?? ""} borrowingEligibility={borrowingEligibility}/>}
       </div>
       <div className="relative flex flex-1 justify-center ">
         <div className="relative">
