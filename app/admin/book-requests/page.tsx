@@ -1,9 +1,9 @@
-import Statholder from "@/components/admin/Statholder";
+import BorrowedBooks from "@/components/admin/BorrowedBooks";
 import React from "react";
 
 const Page = () => {
   return <div>
-    <Statholder />
+    <BorrowedBooks />
   </div>;
 };
 

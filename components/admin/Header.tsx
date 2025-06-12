@@ -15,5 +15,5 @@ const Header = ({ session }: { session: Session }) => {
       {/*<p>Search</p>*/}
     </header>
   );
-};
+}; 
 export default Header;

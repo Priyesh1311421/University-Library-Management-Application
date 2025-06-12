@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer components {
   .admin-container {
     @apply flex w-[calc(100%-264px)] flex-1 flex-col bg-light-300 p-5 xs:p-10;
@@ -69,10 +69,6 @@
   /* Statistics */
   .stat {
     @apply bg-white rounded-xl p-5 space-y-5 flex-1;
-  }
-
-  .stat-info {
-    @apply flex justify-between items-center gap-5;
   }
 
   .stat-label {
