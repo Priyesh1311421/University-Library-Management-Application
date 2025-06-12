@@ -20,9 +20,9 @@ const Statholder = async() => {
     const changeBorrowed = borrowedbook - (yesterdayBorrowed ?? 0);
 
   return <div className="flex flex-wrap gap-2">
-    <Stats title="Borrowed Books" count={borrowedbook} change={changeTotalBooks} />
+    <Stats title="Borrowed Books" count={borrowedbook} change={changeBorrowed} />
     <Stats title="Total Users" count={countUsers} change={changeTotalUsers}/>
-    <Stats title="Total Books" count={countBooks} change={changeBorrowed}/>
+    <Stats title="Total Books" count={countBooks} change={changeTotalBooks}/>
   </div>;
 };
 
